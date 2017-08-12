@@ -1,19 +1,11 @@
 package com.example.alexng.stayclose;
-/*
- * Copyright (C) 2012 The Android Open Source Project
- *
- * Licensed under the Apache License, Version 2.0 (the "License");
- * you may not use this file except in compliance with the License.
- * You may obtain a copy of the License at
- *
- *      http://www.apache.org/licenses/LICENSE-2.0
- *
- * Unless required by applicable law or agreed to in writing, software
- * distributed under the License is distributed on an "AS IS" BASIS,
- * WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
- * See the License for the specific language governing permissions and
- * limitations under the License.
- */
+
+import android.os.Bundle;
+import android.support.v4.app.FragmentActivity;
+import android.widget.Button;
+
+import com.google.android.gms.awareness.Awareness;
+import com.google.android.gms.common.api.GoogleApiClient;
 import com.google.android.gms.maps.CameraUpdateFactory;
 import com.google.android.gms.maps.GoogleMap;
 import com.google.android.gms.maps.GoogleMap.OnMyLocationButtonClickListener;
@@ -66,20 +58,13 @@ public class MapsActivity extends AppCompatActivity
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_maps);
+        SetFenceButton = (Button)findViewById(R.id.set_fence_button);
 
-        SetFenceButton = (Button) findViewById(R.id.set_fence_button);
 
-        SetFenceButton.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View view) {
-                SetFenceButton.setText("Lock Fence");
-
-                SetFenceButton.setOnClickListener(new View.OnClickListener() {
-                    @Override
-                    public void onClick(View view) {
-                        SetFenceButton.setText("Locked");
-                    }
-                });
+        GoogleApiClient mGoogleApiClient = new GoogleApiClient.Builder(this)
+                .addApi(Awareness.API)
+                .build();
+        mGoogleApiClient.connect();
 
             }
         });
