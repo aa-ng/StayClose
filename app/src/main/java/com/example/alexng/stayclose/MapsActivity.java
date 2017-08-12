@@ -2,7 +2,6 @@ package com.example.alexng.stayclose;
 
 import android.os.Bundle;
 import android.support.v4.app.FragmentActivity;
-import android.view.View;
 import android.widget.Button;
 
 import com.google.android.gms.awareness.Awareness;
@@ -24,20 +23,6 @@ public class MapsActivity extends FragmentActivity implements OnMapReadyCallback
         setContentView(R.layout.activity_maps);
         SetFenceButton = (Button)findViewById(R.id.set_fence_button);
 
-        SetFenceButton.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View view) {
-                SetFenceButton.setText("Lock Fence");
-
-                SetFenceButton.setOnClickListener(new View.OnClickListener() {
-                    @Override
-                    public void onClick(View view) {
-                        SetFenceButton.setText("Locked");
-                    }
-                });
-
-            }
-        });
 
         GoogleApiClient mGoogleApiClient = new GoogleApiClient.Builder(this)
                 .addApi(Awareness.API)
