@@ -2,7 +2,11 @@ package com.example.alexng.stayclose;
 
 import android.os.Bundle;
 import android.support.v4.app.FragmentActivity;
+import android.text.TextUtils;
+import android.view.View;
 import android.widget.Button;
+import android.widget.EditText;
+import android.widget.Toast;
 
 import com.google.android.gms.awareness.Awareness;
 import com.google.android.gms.awareness.fence.AwarenessFence;
@@ -16,6 +20,7 @@ import com.google.android.gms.maps.SupportMapFragment;
 import com.google.android.gms.maps.model.LatLng;
 import com.google.android.gms.maps.model.MarkerOptions;
 
+<<<<<<< Updated upstream
 import android.Manifest;
 import android.content.pm.PackageManager;
 import android.os.Bundle;
@@ -53,6 +58,15 @@ public class MapsActivity extends AppCompatActivity
     private boolean mPermissionDenied = false;
 
     Button SetFenceButton;
+=======
+public class MapsActivity extends FragmentActivity implements OnMapReadyCallback {
+    EditText addressInput;
+    String addressInWords;
+    EditText rangeInput;
+    int rangeInMeters;
+    private GoogleMap mMap;
+    Button setFenceButton;
+>>>>>>> Stashed changes
 
     private GoogleMap mMap;
 
@@ -60,7 +74,22 @@ public class MapsActivity extends AppCompatActivity
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_maps);
-        SetFenceButton = (Button)findViewById(R.id.set_fence_button);
+        addressInput = (EditText)findViewById(R.id.address_editor);
+        rangeInput = (EditText)findViewById(R.id.range_editor);
+        setFenceButton = (Button)findViewById(R.id.set_fence_button);
+
+        setFenceButton.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                if((TextUtils.isEmpty(addressInput.getText().toString())) ||
+                        (TextUtils.isEmpty(rangeInput.getText().toString()))) {
+                    Toast.makeText(MapsActivity.this, "Please enter all values", Toast.LENGTH_LONG).show();
+                } else {
+                    addressInWords = addressInput.getText().toString();
+                    rangeInMeters = Integer.parseInt(rangeInput.getText().toString());
+                }
+            }
+        });
 
 
         GoogleApiClient mGoogleApiClient = new GoogleApiClient.Builder(this)
