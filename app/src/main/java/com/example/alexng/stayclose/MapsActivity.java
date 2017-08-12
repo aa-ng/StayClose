@@ -66,9 +66,6 @@ public class MapsActivity extends AppCompatActivity
                 .build();
         mGoogleApiClient.connect();
 
-            }
-        });
-
         SupportMapFragment mapFragment =
                 (SupportMapFragment) getSupportFragmentManager().findFragmentById(R.id.map);
         mapFragment.getMapAsync(this);
