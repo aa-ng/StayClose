@@ -26,6 +26,14 @@ public class MapsActivity extends FragmentActivity implements OnMapReadyCallback
             @Override
             public void onClick(View view) {
                 SetFenceButton.setText("Lock Fence");
+
+                SetFenceButton.setOnClickListener(new View.OnClickListener() {
+                    @Override
+                    public void onClick(View view) {
+                        SetFenceButton.setText("Locked");
+                    }
+                });
+
             }
         });
 
