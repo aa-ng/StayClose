@@ -1,38 +1,28 @@
 package com.example.alexng.stayclose;
 
+import android.content.pm.PackageManager;
 import android.os.Bundle;
+import android.support.annotation.NonNull;
+import android.support.v4.app.ActivityCompat;
 import android.support.v4.app.FragmentActivity;
+import android.support.v4.content.ContextCompat;
+import android.support.v7.app.AppCompatActivity;
+import android.text.TextUtils;
+import android.util.Log;
+import android.view.View;
 import android.widget.Button;
+import android.widget.EditText;
+import android.widget.Toast;
 
 import com.google.android.gms.awareness.Awareness;
-import com.google.android.gms.awareness.fence.AwarenessFence;
-import com.google.android.gms.awareness.fence.LocationFence;
 import com.google.android.gms.common.api.GoogleApiClient;
 import com.google.android.gms.maps.CameraUpdateFactory;
 import com.google.android.gms.maps.GoogleMap;
-import com.google.android.gms.maps.GoogleMap.OnMyLocationButtonClickListener;
 import com.google.android.gms.maps.OnMapReadyCallback;
 import com.google.android.gms.maps.SupportMapFragment;
 import com.google.android.gms.maps.model.LatLng;
 import com.google.android.gms.maps.model.MarkerOptions;
 
-import android.Manifest;
-import android.content.pm.PackageManager;
-import android.os.Bundle;
-import android.support.annotation.NonNull;
-import android.support.v4.app.ActivityCompat;
-import android.support.v4.content.ContextCompat;
-import android.support.v7.app.AppCompatActivity;
-import android.view.View;
-import android.widget.Button;
-import android.widget.Toast;
-
-/**
- * This demo shows how GMS Location can be used to check for changes to the users location.  The
- * "My Location" button uses GMS Location to set the blue dot representing the users location.
- * Permission for {@link android.Manifest.permission#ACCESS_FINE_LOCATION} is requested at run
- * time. If the permission has not been granted, the Activity is finished with an error message.
- */
 public class MapsActivity extends AppCompatActivity
         implements
         GoogleMap.OnMyLocationButtonClickListener,
@@ -52,16 +42,34 @@ public class MapsActivity extends AppCompatActivity
      */
     private boolean mPermissionDenied = false;
 
-    Button SetFenceButton;
-
     private GoogleMap mMap;
+
+    private Button setFenceButton;
+    private EditText addressInput;
+    private String addressInWords;
+    private EditText rangeInput;
+    private int rangeInMeters;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_maps);
-        SetFenceButton = (Button)findViewById(R.id.set_fence_button);
+        addressInput = (EditText)findViewById(R.id.address_editor);
+        rangeInput = (EditText)findViewById(R.id.range_editor);
+        setFenceButton = (Button)findViewById(R.id.set_fence_button);
 
+        setFenceButton.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                if((TextUtils.isEmpty(addressInput.getText().toString())) || (TextUtils.isEmpty(rangeInput.getText().toString()))) {
+                    Toast.makeText(MapsActivity.this, "Please enter all values", Toast.LENGTH_LONG).show();
+                } else {
+                    addressInWords = addressInput.getText().toString();
+                    rangeInMeters = Integer.parseInt(rangeInput.getText().toString());
+                    Toast.makeText(MapsActivity.this, "Location set!", Toast.LENGTH_LONG).show();
+                }
+            }
+        });
 
         GoogleApiClient mGoogleApiClient = new GoogleApiClient.Builder(this)
                 .addApi(Awareness.API)
@@ -98,7 +106,6 @@ public class MapsActivity extends AppCompatActivity
         mMap.setOnMyLocationButtonClickListener(this);
         enableMyLocation();
     }
-
     /**
      * Enables the My Location layer if the fine location permission has been granted.
      */
