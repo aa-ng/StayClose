@@ -39,7 +39,7 @@ public class FencerHandler {
 	private final String FENCE_KEY = "fence_key";
 	private GoogleApiClient mApiClient;
 
-	public FencerHandler(final FragmentActivity context, final double latitude, final double longitutde, final double radius) {
+	public FencerHandler(final FragmentActivity context, final double latitude, final double longitude, final double radius) {
 		mApiClient = new GoogleApiClient.Builder(context)
 				.addApi(Awareness.API)
 				.enableAutoManage(context, 1, null)
@@ -54,7 +54,8 @@ public class FencerHandler {
 						// The broadcast receiver that will receive intents when a fence is triggered.
 						mFenceReceiver = new FenceReceiver();
 						context.registerReceiver(mFenceReceiver, new IntentFilter(FENCE_RECEIVER_ACTION));
-						setupFences(context, latitude, longitutde, radius);
+
+						setupFences(context, latitude, longitude, radius);
 					}
 
 					@Override
@@ -62,6 +63,8 @@ public class FencerHandler {
 					}
 				})
 				.build();
+
+
 
 	}
 
@@ -110,8 +113,11 @@ public class FencerHandler {
 				//mLogFragment.getLogView()
 				//		.println("Received an unsupported action in FenceReceiver: action="
 				//				+ intent.getAction());
+				Log.e(getClass().toString(), "unsupported action");
 				return;
 			}
+
+			Log.i(getClass().toString(), "fence received");
 
 			// The state information for the given fence is em
 			FenceState fenceState = FenceState.extract(intent);
@@ -128,9 +134,11 @@ public class FencerHandler {
 						fenceStateStr = "false";
 						break;
 					case FenceState.UNKNOWN:
+						Log.i(getClass().toString(), "Fence State = unknown");
 						fenceStateStr = "unknown";
 						break;
 					default:
+						Log.i(getClass().toString(), "Fence State = default unknown");
 						fenceStateStr = "unknown value";
 				}
 			}

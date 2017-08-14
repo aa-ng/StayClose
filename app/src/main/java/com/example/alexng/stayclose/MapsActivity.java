@@ -73,8 +73,7 @@ public class MapsActivity extends AppCompatActivity
                 .findFragmentById(R.id.map);
         mapFragment.getMapAsync(this);
 
-
-		new FencerHandler(this, 0.1, 0.1, 0.1);
+		new FencerHandler(MapsActivity.this, 20.0, 20.0, 10.0);
 
     }
 
